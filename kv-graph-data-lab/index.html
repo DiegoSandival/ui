@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KV Graph Data Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="../list-widget-lab/list-widget.css" />
+    <link rel="stylesheet" href="./graph-data.css" />
+  </head>
+  <body>
+    <section class="widget-shell graph-menu-shell" data-role="menu-shell" aria-label="Controles del grafo data first">
+      <article class="widget-card list-widget-card graph-menu-card">
+        <div class="widget-grip">
+          <span class="widget-tag">Data Graph</span>
+          <span class="widget-dots" aria-hidden="true"></span>
+        </div>
+
+        <div class="widget-body list-widget-body graph-menu-body">
+          <div class="graph-menu-row">
+            <button class="toolbar-button" type="button" data-command="reset">root</button>
+            <button class="toolbar-button" type="button" data-command="up">padre</button>
+            <button class="toolbar-button" type="button" data-command="view">vista</button>
+            <div class="graph-status">
+              <strong data-role="current-value">root</strong>
+            </div>
+          </div>
+
+          <form class="graph-editor" data-role="editor" autocomplete="off">
+            <input class="graph-input graph-label-input" type="text" name="label" placeholder="label opcional" data-field="label" />
+            <input class="graph-input graph-input-number" type="number" name="x" placeholder="x" data-field="x" />
+            <input class="graph-input graph-input-number" type="number" name="y" placeholder="y" data-field="y" />
+            <select class="graph-input graph-select" name="type" data-field="type">
+              <option value="string">string</option>
+              <option value="paragraph">parrafo</option>
+              <option value="number">numero</option>
+            </select>
+            <input class="graph-input graph-value-input" type="text" name="value" placeholder="valor" data-field="value" />
+            <textarea class="graph-input graph-textarea is-hidden" name="paragraph" rows="4" placeholder="parrafo" data-field="paragraph"></textarea>
+            <div class="graph-editor-row">
+              <span class="graph-id-chip" data-role="id-chip">nuevo</span>
+              <button class="toolbar-button" type="submit" data-command="save">guardar</button>
+              <button class="toolbar-button toolbar-button-muted" type="button" data-command="delete">eliminar</button>
+            </div>
+          </form>
+        </div>
+      </article>
+    </section>
+
+    <main id="stage" class="stage graph-stage" aria-label="Grafo data first">
+      <div id="viewport" class="graph-viewport"></div>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

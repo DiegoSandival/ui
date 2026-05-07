@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Glass Widgets Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="toolbar" aria-label="Agregar widgets">
+      <button class="toolbar-button" type="button" data-add-widget="button">Boton</button>
+      <button class="toolbar-button" type="button" data-add-widget="input">Input</button>
+      <button class="toolbar-button" type="button" data-add-widget="toggle">Toggle</button>
+      <button class="toolbar-button" type="button" data-add-widget="card">Card</button>
+      <button class="toolbar-button" type="button" data-add-widget="image">Imagen</button>
+    </div>
+
+    <main id="stage" class="stage" aria-label="Canvas de widgets"></main>
+
+    <template id="widget-template-button">
+      <article class="widget-card widget-button-card">
+        <div class="widget-grip">
+          <span class="widget-tag">Boton</span>
+          <span class="widget-dots" aria-hidden="true"></span>
+        </div>
+        <div class="widget-body compact">
+          <button class="primary-widget-button" type="button">Primary Action</button>
+        </div>
+      </article>
+    </template>
+
+    <template id="widget-template-input">
+      <article class="widget-card">
+        <div class="widget-grip">
+          <span class="widget-tag">Input</span>
+          <span class="widget-dots" aria-hidden="true"></span>
+        </div>
+        <div class="widget-body">
+          <label class="input-label" for="">Search</label>
+          <input class="glass-input" type="text" placeholder="Type something" />
+        </div>
+      </article>
+    </template>
+
+    <template id="widget-template-toggle">
+      <article class="widget-card widget-toggle-card">
+        <div class="widget-grip">
+          <span class="widget-tag">Toggle</span>
+          <span class="widget-dots" aria-hidden="true"></span>
+        </div>
+        <div class="widget-body row between">
+          <div>
+            <p class="widget-title">Dark Accent</p>
+            <p class="widget-copy">Subtle feedback state</p>
+          </div>
+          <label class="switch" aria-label="Activar estilo">
+            <input type="checkbox" checked />
+            <span class="switch-track"></span>
+          </label>
+        </div>
+      </article>
+    </template>
+
+    <template id="widget-template-card">
+      <article class="widget-card widget-detail-card">
+        <div class="widget-grip">
+          <span class="widget-tag">Card</span>
+          <span class="widget-dots" aria-hidden="true"></span>
+        </div>
+        <div class="widget-body">
+          <p class="metric-label">Live Metrics</p>
+          <p class="metric-value">98.4%</p>
+          <p class="widget-copy">Readable contrast, soft edges and controlled highlights.</p>
+        </div>
+      </article>
+    </template>
+
+    <template id="widget-template-image">
+      <article class="widget-card widget-image-card">
+        <div class="widget-grip">
+          <span class="widget-tag">Imagen</span>
+          <span class="widget-dots" aria-hidden="true"></span>
+        </div>
+        <div class="widget-body">
+          <div class="image-placeholder">
+            <span>Preview</span>
+          </div>
+          <p class="widget-copy">Image tile with the same glass shell and drag behavior.</p>
+        </div>
+      </article>
+    </template>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

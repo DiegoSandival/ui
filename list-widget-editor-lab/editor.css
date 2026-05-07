@@ -1,0 +1,255 @@
+.stage {
+  padding-right: 352px;
+}
+
+.editor-dock {
+  position: fixed;
+  top: 56px;
+  right: 14px;
+  z-index: 1000;
+  width: 324px;
+  max-height: calc(100vh - 70px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.editor-dock-head,
+.editor-section {
+  padding: 12px;
+}
+
+.editor-dock-head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.editor-dock-title,
+.editor-status,
+.editor-path,
+.selection-summary {
+  margin: 0;
+}
+
+.editor-dock-title {
+  margin-top: 3px;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.editor-status,
+.selection-summary {
+  color: var(--muted);
+  font-size: 0.76rem;
+  line-height: 1.4;
+}
+
+.editor-dock > .editor-section {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.editor-dock > .editor-section:last-child {
+  border-bottom: 0;
+}
+
+.editor-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.editor-section-json {
+  min-height: 0;
+  flex: 1;
+}
+
+.editor-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.editor-path {
+  font-size: 0.86rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.editor-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.editor-field-label {
+  color: var(--muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.editor-select {
+  appearance: none;
+}
+
+.mini-button {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+
+.mini-button:hover {
+  background: rgba(255, 255, 255, 0.11);
+}
+
+.danger-button {
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+.editor-actions-grid,
+.json-actions {
+  display: grid;
+  gap: 8px;
+}
+
+.editor-actions-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.inspector-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.inspector-grid .danger-button {
+  grid-column: span 2;
+}
+
+.json-actions {
+  grid-template-columns: repeat(2, auto);
+}
+
+.structure-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 208px;
+  overflow: auto;
+  padding-right: 2px;
+}
+
+.structure-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.structure-item-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+}
+
+.structure-item-button.is-selected {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.structure-item-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.structure-item-label,
+.structure-item-meta {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.structure-item-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.structure-item-meta {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 0.73rem;
+}
+
+.structure-item-tools {
+  display: flex;
+  gap: 6px;
+}
+
+.icon-button {
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.json-textarea {
+  min-height: 0;
+  flex: 1;
+  width: 100%;
+  resize: none;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  padding: 12px;
+  outline: none;
+  font: 12px/1.5 Consolas, monospace;
+}
+
+.json-textarea:focus {
+  border-color: rgba(255, 255, 255, 0.24);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.06);
+}
+
+.preview-widget-shell {
+  width: 264px;
+}
+
+@media (max-width: 980px) {
+  .stage {
+    padding-right: 0;
+  }
+
+  .editor-dock {
+    top: auto;
+    right: 14px;
+    bottom: 14px;
+    left: 14px;
+    width: auto;
+    max-height: 44vh;
+  }
+
+  .preview-widget-shell {
+    width: min(264px, calc(100vw - 28px));
+  }
+}

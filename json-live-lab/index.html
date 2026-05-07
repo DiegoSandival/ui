@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSON Live Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="./json-live.css" />
+  </head>
+  <body>
+    <div class="toolbar" aria-label="Acciones JSON vivo">
+      <button class="toolbar-button" type="button" data-toolbar-action="reset">Reset sample</button>
+      <button class="toolbar-button" type="button" data-toolbar-action="expand">Expand all</button>
+      <button class="toolbar-button" type="button" data-toolbar-action="collapse">Collapse all</button>
+    </div>
+
+    <main id="stage" class="stage" aria-label="Canvas JSON vivo"></main>
+    <div id="toast-stack" class="toast-stack" aria-live="polite" aria-atomic="false"></div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

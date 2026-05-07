@@ -1,0 +1,154 @@
+.context-widget-shell {
+  width: 272px;
+}
+
+.context-widget-shell.scene-shell {
+  width: 280px;
+}
+
+.context-widget-shell.composer-shell {
+  width: 296px;
+}
+
+.context-widget-shell.engine-shell {
+  width: 292px;
+}
+
+.context-widget-shell.capture-shell {
+  width: 264px;
+}
+
+.context-card {
+  min-height: 264px;
+  max-height: min(78vh, 760px);
+  display: flex;
+  flex-direction: column;
+}
+
+.context-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  min-height: 0;
+  flex: 1;
+}
+
+.composer-shell .context-card {
+  max-height: min(82vh, 860px);
+}
+
+.context-body .list-items {
+  min-height: 0;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 4px;
+}
+
+.context-body .list-items::-webkit-scrollbar {
+  width: 8px;
+}
+
+.context-body .list-items::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.context-body .list-items::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.context-status {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+.context-entry.is-command {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.context-entry.is-command:hover {
+  background: rgba(255, 255, 255, 0.11);
+}
+
+.context-entry.is-selected {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.context-entry.is-selected .list-entry-label::before {
+  content: "• ";
+}
+
+.entry-badge {
+  flex: 0 0 auto;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.68rem;
+}
+
+.capture-body {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.capture-title,
+.capture-copy {
+  margin: 0;
+}
+
+.capture-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.capture-copy {
+  color: var(--muted);
+  font-size: 0.76rem;
+  line-height: 1.4;
+}
+
+.capture-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.capture-button {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 12px;
+  padding: 9px 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.capture-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 1200px) {
+  .context-widget-shell.scene-shell,
+  .context-widget-shell.composer-shell,
+  .context-widget-shell.engine-shell,
+  .context-widget-shell.capture-shell {
+    width: min(296px, calc(100vw - 28px));
+  }
+
+  .context-card,
+  .composer-shell .context-card {
+    max-height: min(62vh, 680px);
+  }
+}

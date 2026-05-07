@@ -1,0 +1,113 @@
+.system-widget-shell {
+  width: 264px;
+}
+
+.system-widget-shell.scene-shell {
+  width: 272px;
+}
+
+.system-widget-shell.capture-shell {
+  width: 264px;
+}
+
+.system-list-card {
+  min-height: 252px;
+}
+
+.system-list-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+}
+
+.capture-body {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.capture-title,
+.capture-copy {
+  margin: 0;
+}
+
+.capture-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.capture-copy {
+  color: var(--muted);
+  font-size: 0.76rem;
+  line-height: 1.4;
+}
+
+.capture-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.capture-button {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 12px;
+  padding: 9px 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.capture-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.system-status {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+.system-list-entry.is-selected {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.system-list-entry.is-selected .list-entry-label::before {
+  content: "• ";
+}
+
+.system-list-entry.is-command {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.system-list-entry.is-command:hover {
+  background: rgba(255, 255, 255, 0.11);
+}
+
+.list-entry-badge {
+  flex: 0 0 auto;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.68rem;
+}
+
+.list-element-text.system-copy {
+  padding-top: 0;
+}
+
+@media (max-width: 720px) {
+  .system-widget-shell,
+  .system-widget-shell.scene-shell {
+    width: min(272px, calc(100vw - 28px));
+  }
+}

@@ -1,0 +1,215 @@
+.json-live-shell {
+  width: 540px;
+}
+
+.json-live-shell.mirror-shell {
+  width: 420px;
+}
+
+.json-live-card {
+  display: flex;
+  flex-direction: column;
+  max-height: min(82vh, 820px);
+  min-height: 300px;
+}
+
+.json-live-body {
+  min-height: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+}
+
+.json-live-status {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.json-scroll {
+  min-height: 0;
+  flex: 1;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.json-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.json-scroll::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.json-tree {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.json-row-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.json-row {
+  display: grid;
+  grid-template-columns: auto minmax(120px, 170px) minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.json-row.is-selected {
+  border-color: rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.json-node-main,
+.json-value-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.json-toggle,
+.json-tool-button,
+.json-mirror-button {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.json-toggle,
+.json-tool-button {
+  width: 28px;
+  height: 28px;
+}
+
+.json-key-input,
+.json-value-input,
+.json-mirror-textarea {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  outline: none;
+}
+
+.json-key-input,
+.json-value-input {
+  min-width: 0;
+  padding: 8px 10px;
+  font-size: 0.82rem;
+}
+
+.json-key-input {
+  max-width: 160px;
+}
+
+.json-index-chip,
+.json-summary,
+.json-summary-chip,
+.json-action-chip {
+  font-size: 0.78rem;
+}
+
+.json-summary,
+.json-summary-chip {
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.json-index-chip,
+.json-summary-chip,
+.json-action-chip {
+  padding: 4px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  color: var(--muted);
+}
+
+.json-action-chip.is-do {
+  color: #f5d48d;
+}
+
+.json-action-chip.is-go {
+  color: #8fd8ff;
+}
+
+.json-action-chip.is-is {
+  color: #98e0ae;
+}
+
+.json-children {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.json-row-tools,
+.json-mirror-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.json-root-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.json-mirror-actions {
+  justify-content: space-between;
+}
+
+.json-mirror-button {
+  padding: 8px 12px;
+  font-size: 0.8rem;
+}
+
+.json-mirror-textarea {
+  min-height: 0;
+  flex: 1;
+  resize: none;
+  padding: 12px;
+  font: 12px/1.55 Consolas, monospace;
+}
+
+@media (max-width: 1220px) {
+  .json-live-shell,
+  .json-live-shell.mirror-shell {
+    width: min(540px, calc(100vw - 28px));
+  }
+}
+
+@media (max-width: 860px) {
+  .json-row {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .json-row-tools,
+  .json-value-area,
+  .json-node-main {
+    grid-column: 1 / -1;
+    flex-wrap: wrap;
+  }
+}

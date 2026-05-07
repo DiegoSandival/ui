@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>List Widget Editor Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="../list-widget-lab/list-widget.css" />
+    <link rel="stylesheet" href="./editor.css" />
+  </head>
+  <body>
+    <div class="toolbar" aria-label="Acciones del editor">
+      <button class="toolbar-button" type="button" data-toolbar-action="new">Nueva estructura</button>
+      <button class="toolbar-button" type="button" data-toolbar-action="sample">Restaurar ejemplo</button>
+      <button class="toolbar-button" type="button" data-toolbar-action="save-local">Guardar local</button>
+      <button class="toolbar-button" type="button" data-toolbar-action="load-local">Cargar local</button>
+      <button class="toolbar-button" type="button" data-toolbar-action="download-json">Descargar JSON</button>
+      <button class="toolbar-button" type="button" data-toolbar-action="open-file">Cargar archivo</button>
+    </div>
+
+    <input id="json-file-input" type="file" accept="application/json,.json" hidden />
+
+    <main id="stage" class="stage" aria-label="Canvas de preview"></main>
+
+    <aside class="editor-dock widget-card" aria-label="Editor visual de listas">
+      <div class="editor-dock-head">
+        <div>
+          <p class="metric-label">Editor visual</p>
+          <p class="editor-dock-title">Lista editable desde JSON</p>
+        </div>
+        <p id="editor-status" class="editor-status">1 preview</p>
+      </div>
+
+      <div class="editor-section">
+        <div class="editor-section-head">
+          <p class="metric-label">Nivel actual</p>
+          <button id="back-level-button" class="mini-button" type="button">Volver</button>
+        </div>
+        <p id="editor-path" class="editor-path">Lista editable</p>
+        <label class="editor-field">
+          <span class="editor-field-label">Titulo del nivel</span>
+          <input id="current-level-title" class="glass-input" type="text" placeholder="Titulo" />
+        </label>
+        <div class="editor-actions-grid">
+          <button class="mini-button" type="button" data-add-item="button">+ Button</button>
+          <button class="mini-button" type="button" data-add-item="title">+ Title</button>
+          <button class="mini-button" type="button" data-add-item="text">+ Text</button>
+          <button class="mini-button" type="button" data-add-item="separator">+ Sep</button>
+        </div>
+        <div id="structure-list" class="structure-list"></div>
+      </div>
+
+      <div class="editor-section">
+        <p class="metric-label">Inspector</p>
+        <p id="selection-summary" class="selection-summary">Selecciona un nodo para editar sus propiedades.</p>
+
+        <label class="editor-field">
+          <span class="editor-field-label">Label</span>
+          <input id="node-label-input" class="glass-input" type="text" placeholder="Texto principal" />
+        </label>
+
+        <label class="editor-field" id="node-hint-field">
+          <span class="editor-field-label">Hint</span>
+          <input id="node-hint-input" class="glass-input" type="text" placeholder="Texto secundario" />
+        </label>
+
+        <label class="editor-field" id="node-action-field">
+          <span class="editor-field-label">Action</span>
+          <input id="node-action-input" class="glass-input" type="text" list="action-suggestions" placeholder="spawn-widget" />
+        </label>
+
+        <label class="editor-field" id="node-variant-field">
+          <span class="editor-field-label">Variant</span>
+          <select id="node-variant-input" class="glass-input editor-select">
+            <option value="title">title</option>
+            <option value="text">text</option>
+            <option value="separator">separator</option>
+          </select>
+        </label>
+
+        <div class="editor-actions-grid inspector-grid">
+          <button id="enter-children-button" class="mini-button" type="button">Editar hijos</button>
+          <button id="duplicate-node-button" class="mini-button" type="button">Duplicar</button>
+          <button id="move-up-button" class="mini-button" type="button">Subir</button>
+          <button id="move-down-button" class="mini-button" type="button">Bajar</button>
+          <button id="delete-node-button" class="mini-button danger-button" type="button">Eliminar</button>
+        </div>
+      </div>
+
+      <div class="editor-section editor-section-json">
+        <div class="editor-section-head">
+          <p class="metric-label">JSON</p>
+          <div class="json-actions">
+            <button id="refresh-json-button" class="mini-button" type="button">Refrescar</button>
+            <button id="import-json-button" class="mini-button" type="button">Importar</button>
+          </div>
+        </div>
+        <textarea id="json-textarea" class="json-textarea" spellcheck="false"></textarea>
+      </div>
+    </aside>
+
+    <div id="toast-stack" class="toast-stack" aria-live="polite" aria-atomic="false"></div>
+
+    <datalist id="action-suggestions">
+      <option value="open-home"></option>
+      <option value="show-controls"></option>
+      <option value="show-media"></option>
+      <option value="run-sync"></option>
+      <option value="spawn-widget"></option>
+      <option value="show-toast"></option>
+    </datalist>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
