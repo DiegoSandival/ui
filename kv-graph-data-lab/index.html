@@ -33,7 +33,7 @@
           </div>
 
           <form class="graph-editor" data-role="editor" autocomplete="off">
-            <input class="graph-input graph-label-input" type="text" name="label" placeholder="label opcional" data-field="label" />
+            <input class="graph-input graph-label-input" type="text" name="name" placeholder="nombre unico" data-field="label" />
             <input class="graph-input graph-input-number" type="number" name="x" placeholder="x" data-field="x" />
             <input class="graph-input graph-input-number" type="number" name="y" placeholder="y" data-field="y" />
             <select class="graph-input graph-select" name="type" data-field="type">
@@ -45,8 +45,12 @@
             <textarea class="graph-input graph-textarea is-hidden" name="paragraph" rows="4" placeholder="parrafo" data-field="paragraph"></textarea>
             <div class="graph-editor-row">
               <span class="graph-id-chip" data-role="id-chip">nuevo</span>
+              <span class="graph-id-chip" data-role="parents-key">padres-nuevo</span>
               <button class="toolbar-button" type="submit" data-command="save">guardar</button>
               <button class="toolbar-button toolbar-button-muted" type="button" data-command="delete">eliminar</button>
+            </div>
+            <div class="graph-editor-row graph-editor-row-secondary">
+              <span class="graph-parent-list" data-role="parents-list">sin padres</span>
             </div>
           </form>
         </div>

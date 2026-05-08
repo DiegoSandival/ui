@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Organismo Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="../list-widget-lab/list-widget.css" />
+    <link rel="stylesheet" href="./organismo.css" />
+  </head>
+  <body>
+    <section class="widget-shell organism-nav-shell" data-role="nav-shell" aria-label="Navegacion del organismo">
+      <article class="widget-card list-widget-card organism-nav-card">
+        <div class="widget-grip">
+          <span class="widget-tag">Organismo</span>
+          <span class="widget-dots" aria-hidden="true"></span>
+        </div>
+
+        <div class="widget-body list-widget-body organism-nav-body">
+          <div class="organism-nav-row">
+            <button class="toolbar-button" type="button" data-command="reset">root</button>
+            <button class="toolbar-button" type="button" data-command="up">padre</button>
+            <button class="toolbar-button" type="button" data-command="view">vista</button>
+            <button class="toolbar-button" type="button" data-command="new">nuevo</button>
+          </div>
+          <div class="organism-nav-status">
+            <strong data-role="current-value">organismo</strong>
+            <span data-role="current-meta">espacio vivo</span>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <main id="stage" class="stage organism-stage" aria-label="Organismo de nodos">
+      <div id="viewport" class="organism-viewport"></div>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

@@ -13,6 +13,8 @@ const typeSelect = document.querySelector('[data-field="type"]');
 const valueInput = document.querySelector('[data-field="value"]');
 const paragraphInput = document.querySelector('[data-field="paragraph"]');
 const idChip = document.querySelector('[data-role="id-chip"]');
+const parentsKeyChip = document.querySelector('[data-role="parents-key"]');
+const parentsList = document.querySelector('[data-role="parents-list"]');
 const saveButton = document.querySelector('[data-command="save"]');
 const deleteButton = document.querySelector('[data-command="delete"]');
 
@@ -238,6 +240,14 @@ function ensureChildren(node) {
   return node.children;
 }
 
+function ensureParents(node) {
+  if (!Array.isArray(node.parents)) {
+    node.parents = [];
+  }
+
+  return node.parents;
+}
+
 function generateNodeId() {
   if (typeof crypto?.randomUUID === "function") {
     return `node-${crypto.randomUUID().slice(0, 8)}`;
@@ -248,6 +258,68 @@ function generateNodeId() {
 
 function normalizeText(value) {
   return String(value ?? "").trim();
+}
+
+function normalizeNodeName(value) {
+  return normalizeText(value).toLowerCase();
+}
+
+function getDefaultNodeName(node) {
+  if (node.type === "string" && typeof node.value === "string" && normalizeText(node.value)) {
+    return normalizeText(node.value);
+  }
+
+  if (normalizeText(node.value)) {
+    return normalizeText(node.value);
+  }
+
+  return node.id.replace(/^node-/, "");
+}
+
+function getParentsKey(name) {
+  return `padres-${normalizeText(name) || "nuevo"}`;
+}
+
+function ensureNodeNames() {
+  const usedNames = new Set();
+
+  Object.values(graph.nodes).forEach((node) => {
+    const preferredName = normalizeText(node.name || getDefaultNodeName(node)) || node.id;
+    let nextName = preferredName;
+    let suffix = 2;
+
+    while (usedNames.has(normalizeNodeName(nextName))) {
+      nextName = `${preferredName}-${suffix}`;
+      suffix += 1;
+    }
+
+    node.name = nextName;
+    node.parentsKey = getParentsKey(nextName);
+    usedNames.add(normalizeNodeName(nextName));
+  });
+}
+
+function syncParentLinks() {
+  Object.values(graph.nodes).forEach((node) => {
+    ensureParents(node).length = 0;
+    node.parentsKey = getParentsKey(node.name);
+  });
+
+  Object.values(graph.nodes).forEach((parentNode) => {
+    ensureChildren(parentNode).forEach((childRef) => {
+      const childNode = getNode(childRef.id);
+
+      if (!childNode) {
+        return;
+      }
+
+      ensureParents(childNode).push({
+        id: parentNode.id,
+        name: parentNode.name,
+        value: getDisplayValue(parentNode)
+      });
+    });
+  });
 }
 
 function parseOffset(value) {
@@ -275,10 +347,6 @@ function getDisplayValue(node) {
     return text;
   }
 
-  if (node.label) {
-    return node.label;
-  }
-
   return node.id;
 }
 
@@ -297,12 +365,34 @@ function getTypeLabel(type) {
 function getNodeMeta(node) {
   const parts = [];
 
-  if (node.label) {
-    parts.push(node.label);
+  if (node.name) {
+    parts.push(node.name);
   }
 
   parts.push(getTypeLabel(node.type));
   return parts.join(" · ");
+}
+
+function findNodeByName(name, excludeNodeId = null) {
+  const normalizedName = normalizeNodeName(name);
+
+  if (!normalizedName) {
+    return null;
+  }
+
+  return (
+    Object.values(graph.nodes).find((node) => node.id !== excludeNodeId && normalizeNodeName(node.name) === normalizedName) ?? null
+  );
+}
+
+function findSiblingRefByNodeId(nodeId, excludeIndex = -1) {
+  const currentNode = getCurrentNode();
+
+  if (!currentNode) {
+    return null;
+  }
+
+  return ensureChildren(currentNode).find((childRef, index) => index !== excludeIndex && childRef.id === nodeId) ?? null;
 }
 
 function applyCamera() {
@@ -387,6 +477,8 @@ function resetEditorFields() {
   xInput.value = "140";
   yInput.value = "0";
   idChip.textContent = "nuevo";
+  parentsKeyChip.textContent = "padres-nuevo";
+  parentsList.textContent = "sin padres";
   fillValueFields("string", "");
 }
 
@@ -415,7 +507,11 @@ function syncEditor() {
   saveButton.textContent = "actualizar";
   deleteButton.disabled = false;
   idChip.textContent = selectedChild.node.id;
-  labelInput.value = selectedChild.node.label ?? "";
+  parentsKeyChip.textContent = selectedChild.node.parentsKey || getParentsKey(selectedChild.node.name);
+  parentsList.textContent = selectedChild.node.parents?.length
+    ? selectedChild.node.parents.map((parent) => parent.name).join(", ")
+    : "sin padres";
+  labelInput.value = selectedChild.node.name ?? "";
   xInput.value = String(selectedChild.ref.x);
   yInput.value = String(selectedChild.ref.y);
   fillValueFields(selectedChild.node.type, selectedChild.node.value);
@@ -447,13 +543,15 @@ function pruneDetachedNode(nodeId) {
 }
 
 function createNodeFromEditor() {
-  const label = normalizeText(labelInput.value);
+  const name = normalizeText(labelInput.value);
   const { type, value } = getEditorValue();
 
   return {
     id: generateNodeId(),
+    name,
+    parentsKey: getParentsKey(name),
+    parents: [],
     type,
-    label,
     value,
     children: []
   };
@@ -468,27 +566,74 @@ function saveChild() {
 
   const x = parseOffset(xInput.value);
   const y = parseOffset(yInput.value);
-  const label = normalizeText(labelInput.value);
+  const name = normalizeText(labelInput.value);
   const { type, value } = getEditorValue();
   const selectedChild = getSelectedChildRef();
 
+  if (!name) {
+    return;
+  }
+
   if (!selectedChild) {
+    const existingNode = findNodeByName(name);
+
+    if (existingNode) {
+      const siblingRef = findSiblingRefByNodeId(existingNode.id);
+
+      if (siblingRef) {
+        siblingRef.x = x;
+        siblingRef.y = y;
+      } else {
+        ensureChildren(currentNode).push({ id: existingNode.id, x, y });
+      }
+
+      syncParentLinks();
+      state.selectedChildId = existingNode.id;
+      render();
+      return;
+    }
+
     const nextNode = createNodeFromEditor();
-    nextNode.label = label;
+    nextNode.name = name;
     nextNode.type = type;
     nextNode.value = value;
     graph.nodes[nextNode.id] = nextNode;
     ensureChildren(currentNode).push({ id: nextNode.id, x, y });
+    syncParentLinks();
     state.selectedChildId = nextNode.id;
+    render();
+    return;
+  }
+
+  const targetNode = findNodeByName(name, selectedChild.node.id);
+
+  if (targetNode) {
+    const siblingRef = findSiblingRefByNodeId(targetNode.id, selectedChild.index);
+
+    if (siblingRef) {
+      siblingRef.x = x;
+      siblingRef.y = y;
+      ensureChildren(currentNode).splice(selectedChild.index, 1);
+    } else {
+      selectedChild.ref.id = targetNode.id;
+      selectedChild.ref.x = x;
+      selectedChild.ref.y = y;
+    }
+
+    pruneDetachedNode(selectedChild.node.id);
+    syncParentLinks();
+    state.selectedChildId = targetNode.id;
     render();
     return;
   }
 
   selectedChild.ref.x = x;
   selectedChild.ref.y = y;
-  selectedChild.node.label = label;
+  selectedChild.node.name = name;
+  selectedChild.node.parentsKey = getParentsKey(name);
   selectedChild.node.type = type;
   selectedChild.node.value = value;
+  syncParentLinks();
   render();
 }
 
@@ -502,6 +647,7 @@ function deleteSelectedChild() {
 
   ensureChildren(currentNode).splice(selectedChild.index, 1);
   pruneDetachedNode(selectedChild.node.id);
+  syncParentLinks();
   state.selectedChildId = null;
   render();
 }
@@ -536,6 +682,8 @@ function createGraphNode(node, position, options = {}) {
   element.style.top = `${position.y}px`;
   element.classList.toggle("is-parent", Boolean(options.parent));
   element.classList.toggle("is-selected", Boolean(options.selected));
+  element.classList.toggle("is-string", node.type === "string");
+  element.classList.toggle("is-paragraph", node.type === "paragraph");
   element.classList.toggle("is-number", node.type === "number");
 
   const valueNode = document.createElement("p");
@@ -544,7 +692,7 @@ function createGraphNode(node, position, options = {}) {
 
   const labelNode = document.createElement("span");
   labelNode.className = "graph-node-label";
-  labelNode.textContent = node.label || node.id;
+  labelNode.textContent = node.name || node.id;
 
   const metaNode = document.createElement("span");
   metaNode.className = "graph-node-meta";
@@ -625,7 +773,11 @@ function enableChildDragging(nodeElement, childRef, childNode, edge, worldPositi
       }
 
       idChip.textContent = childNode.id;
-      labelInput.value = childNode.label ?? "";
+      parentsKeyChip.textContent = childNode.parentsKey || getParentsKey(childNode.name);
+      parentsList.textContent = childNode.parents?.length
+        ? childNode.parents.map((parent) => parent.name).join(", ")
+        : "sin padres";
+      labelInput.value = childNode.name ?? "";
       xInput.value = String(childRef.x);
       yInput.value = String(childRef.y);
       fillValueFields(childNode.type, childNode.value);
@@ -869,6 +1021,8 @@ window.addEventListener("resize", () => {
 
 enableStagePanning();
 enableMenuDragging(menuShell);
+ensureNodeNames();
+syncParentLinks();
 setValueFieldVisibility();
 menuShell.style.left = "14px";
 menuShell.style.top = "14px";
