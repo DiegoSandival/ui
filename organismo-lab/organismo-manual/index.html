@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Organismo Manual</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="stage" id="canvas">
+      <article class="node" data-draggable style="left: 180px; top: 140px; width: 200px;">
+        <header class="node-head" data-handle>
+          <span class="node-tag">space</span>
+        </header>
+        <div class="node-body">
+          <h3>organismo</h3>
+          <p>base</p>
+        </div>
+      </article>
+
+      <article class="node" data-draggable style="left: 430px; top: 160px; width: 176px;">
+        <header class="node-head" data-handle>
+          <span class="node-tag">thread</span>
+        </header>
+        <div class="node-body">
+          <h3>boot</h3>
+          <p>flow</p>
+        </div>
+      </article>
+
+      <article class="node" data-draggable style="left: 200px; top: 360px; width: 240px;">
+        <header class="node-head" data-handle>
+          <span class="node-tag">text</span>
+        </header>
+        <div class="node-body">
+          <h3>editor html</h3>
+          <p>source</p>
+        </div>
+      </article>
+
+      <article class="node" data-draggable style="left: 500px; top: 360px; width: 220px;">
+        <header class="node-head" data-handle>
+          <span class="node-tag">action</span>
+        </header>
+        <div class="node-body">
+          <h3>render html</h3>
+          <p>adapter</p>
+        </div>
+      </article>
+
+      <section class="node node-editor" data-draggable style="left: 820px; top: 240px; width: 280px;">
+        <header class="node-head" data-handle>
+          <span class="node-tag">editor</span>
+        </header>
+        <div class="node-body">
+          <h3>inspector</h3>
+          <textarea class="node-textarea" placeholder="Escribe aqui..."></textarea>
+        </div>
+      </section>
+    </main>
+
+    <script src="./drag.js"></script>
+  </body>
+</html>

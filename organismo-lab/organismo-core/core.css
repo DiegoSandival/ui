@@ -1,0 +1,307 @@
+:root {
+  color-scheme: dark;
+  --bg: #101418;
+  --panel: rgba(18, 24, 31, 0.88);
+  --panel-strong: rgba(24, 32, 42, 0.94);
+  --line: rgba(144, 190, 255, 0.2);
+  --text: #eef4ff;
+  --muted: #8b9cb1;
+  --accent: #7ed6a5;
+  --accent-2: #ffcf70;
+  --node: #17202a;
+  --node-border: rgba(162, 196, 255, 0.18);
+  --selected: #7ed6a5;
+  --shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(126, 214, 165, 0.18), transparent 28%),
+    radial-gradient(circle at top right, rgba(255, 207, 112, 0.18), transparent 24%),
+    linear-gradient(180deg, #0c1015, #141b22 45%, #0f1419);
+  color: var(--text);
+}
+
+button,
+textarea {
+  font: inherit;
+}
+
+.app-shell {
+  width: min(1440px, calc(100vw - 32px));
+  margin: 0 auto;
+  padding: 16px 0 24px;
+}
+
+.topbar,
+.panel,
+.workspace-card,
+.inspector-card,
+.log-card {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 22px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 16px;
+  padding: 18px 20px;
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  color: var(--accent);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.topbar h1,
+.panel-head h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.topbar p,
+.panel-head p,
+.workspace-head span,
+.node-meta,
+.inspector-meta,
+.field-hint {
+  color: var(--muted);
+}
+
+.toolbar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.toolbar button,
+.inspector-actions button {
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.toolbar button:hover,
+.inspector-actions button:hover,
+.graph-node:hover {
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(340px, 0.9fr);
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.panel {
+  padding: 16px;
+}
+
+.panel-head {
+  margin-bottom: 14px;
+}
+
+.graph-stage {
+  position: relative;
+  min-height: 640px;
+  overflow: auto;
+  border-radius: 18px;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+  background-size: 36px 36px, 36px 36px, auto;
+}
+
+.graph-lines,
+.graph-nodes {
+  position: absolute;
+  inset: 0;
+  min-width: 900px;
+  min-height: 680px;
+}
+
+.graph-lines {
+  overflow: visible;
+}
+
+.graph-line {
+  stroke: var(--line);
+  stroke-width: 2;
+}
+
+.graph-nodes {
+  pointer-events: none;
+}
+
+.graph-node {
+  position: absolute;
+  width: 168px;
+  min-height: 92px;
+  padding: 12px;
+  border: 1px solid var(--node-border);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(31, 42, 54, 0.96), rgba(21, 28, 36, 0.92));
+  color: var(--text);
+  text-align: left;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.graph-node.is-selected {
+  border-color: var(--selected);
+  box-shadow: 0 0 0 1px rgba(126, 214, 165, 0.4);
+}
+
+.graph-node[data-kind="thread"] {
+  background: linear-gradient(180deg, rgba(52, 62, 89, 0.95), rgba(27, 34, 46, 0.92));
+}
+
+.graph-node[data-kind="action"] {
+  background: linear-gradient(180deg, rgba(74, 62, 34, 0.95), rgba(40, 32, 17, 0.92));
+}
+
+.graph-node[data-kind="text"] {
+  background: linear-gradient(180deg, rgba(31, 54, 47, 0.95), rgba(18, 34, 30, 0.92));
+}
+
+.graph-node strong,
+.graph-node span,
+.graph-node small {
+  display: block;
+}
+
+.graph-node strong {
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+.graph-node span {
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.graph-node small {
+  color: rgba(238, 244, 255, 0.84);
+  line-height: 1.35;
+}
+
+.side-panel {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+
+.workspace-card,
+.inspector-card,
+.log-card {
+  padding: 14px;
+}
+
+.workspace-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.workspace-body {
+  min-height: 220px;
+  border-radius: 18px;
+  background: var(--panel-strong);
+  padding: 16px;
+  overflow: auto;
+}
+
+.workspace-body .card {
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.inspector-card {
+  display: grid;
+  gap: 12px;
+}
+
+.inspector-card h3,
+.inspector-card p,
+.log-card pre {
+  margin: 0;
+}
+
+.inspector-card textarea {
+  width: 100%;
+  min-height: 180px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  resize: vertical;
+}
+
+.inspector-json {
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #cde0ff;
+  font-size: 0.82rem;
+  overflow: auto;
+}
+
+.inspector-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.log-card pre {
+  min-height: 160px;
+  max-height: 260px;
+  overflow: auto;
+  color: #cde0ff;
+  font-size: 0.82rem;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 980px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .graph-stage {
+    min-height: 520px;
+  }
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Organismo Core</title>
+    <link rel="stylesheet" href="./core.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Organismo Core</p>
+          <h1>Grafo minimo + adaptadores web</h1>
+        </div>
+        <div class="toolbar">
+          <button type="button" data-command="run-boot">run boot</button>
+          <button type="button" data-command="download-json">descargar json</button>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="panel graph-panel" aria-label="Grafo">
+          <div class="panel-head">
+            <h2>Grafo</h2>
+            <p>El nucleo solo resuelve nodos, enlaces y adaptadores.</p>
+          </div>
+          <div class="graph-stage" id="graph-stage">
+            <svg class="graph-lines" id="graph-lines" aria-hidden="true"></svg>
+            <div class="graph-nodes" id="graph-nodes"></div>
+          </div>
+        </section>
+
+        <section class="panel side-panel">
+          <div class="panel-head">
+            <h2>Runtime</h2>
+            <p>Vista, inspector y registro.</p>
+          </div>
+
+          <section class="workspace-card">
+            <div class="workspace-head">
+              <strong>preview-surface</strong>
+              <span id="runtime-status">listo</span>
+            </div>
+            <div class="workspace-body" id="preview-surface"></div>
+          </section>
+
+          <section class="inspector-card" id="inspector"></section>
+
+          <section class="log-card">
+            <div class="workspace-head">
+              <strong>runtime log</strong>
+              <span>ultimos eventos</span>
+            </div>
+            <pre id="runtime-log"></pre>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="./core.js"></script>
+  </body>
+</html>

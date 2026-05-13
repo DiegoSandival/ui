@@ -1,0 +1,115 @@
+{
+  "root": "app",
+  "nodes": [
+    {
+      "id": "app",
+      "kind": "space",
+      "label": "organismo core",
+      "position": { "x": 110, "y": 120 },
+      "data": {
+        "description": "nucleo fijo que solo interpreta datos"
+      }
+    },
+    {
+      "id": "boot",
+      "kind": "thread",
+      "label": "boot",
+      "position": { "x": 340, "y": 120 },
+      "data": {
+        "description": "reproduce la idea de thread sobre grafo"
+      }
+    },
+    {
+      "id": "preview-root",
+      "kind": "component",
+      "label": "preview",
+      "position": { "x": 600, "y": 120 },
+      "data": {
+        "adapter": "dom",
+        "mount": "preview-surface"
+      }
+    },
+    {
+      "id": "html-source",
+      "kind": "text",
+      "label": "editor html",
+      "position": { "x": 110, "y": 330 },
+      "data": {
+        "text": "<section class=\"card\"><h1>Organismo Core</h1><p>El grafo describe la vista. Los adaptadores usan la tecnologia existente.</p><button data-action=\"ping\">probar evento</button></section>"
+      }
+    },
+    {
+      "id": "css-source",
+      "kind": "text",
+      "label": "editor css",
+      "position": { "x": 340, "y": 330 },
+      "data": {
+        "text": "#preview-surface .card { border-color: rgba(126, 214, 165, 0.36); }\n#preview-surface h1 { margin: 0 0 10px; color: #7ed6a5; }\n#preview-surface p { color: #d8e3ef; line-height: 1.5; }\n#preview-surface button { min-height: 38px; padding: 0 14px; border: 0; border-radius: 999px; background: #7ed6a5; color: #122018; cursor: pointer; }"
+      }
+    },
+    {
+      "id": "js-source",
+      "kind": "text",
+      "label": "editor js",
+      "position": { "x": 600, "y": 330 },
+      "data": {
+        "text": "api.log('js listo');\nconst button = api.mount.querySelector('[data-action=\\\"ping\\\"]');\nif (button) {\n  button.onclick = () => {\n    button.textContent = 'latido';\n    api.log('evento desde el nodo js');\n  };\n}"
+      }
+    },
+    {
+      "id": "apply-html",
+      "kind": "action",
+      "label": "aplicar html",
+      "position": { "x": 110, "y": 540 },
+      "data": {
+        "adapter": "dom",
+        "action": "renderMarkup",
+        "source": "html-source",
+        "target": "preview-root"
+      }
+    },
+    {
+      "id": "apply-css",
+      "kind": "action",
+      "label": "aplicar css",
+      "position": { "x": 340, "y": 540 },
+      "data": {
+        "adapter": "css",
+        "action": "applyStylesheet",
+        "source": "css-source",
+        "target": "preview-root"
+      }
+    },
+    {
+      "id": "run-js",
+      "kind": "action",
+      "label": "ejecutar js",
+      "position": { "x": 600, "y": 540 },
+      "data": {
+        "adapter": "js",
+        "action": "runScript",
+        "source": "js-source",
+        "target": "preview-root"
+      }
+    }
+  ],
+  "edges": [
+    { "from": "app", "to": "boot", "type": "contains" },
+    { "from": "app", "to": "preview-root", "type": "contains" },
+    { "from": "app", "to": "html-source", "type": "contains" },
+    { "from": "app", "to": "css-source", "type": "contains" },
+    { "from": "app", "to": "js-source", "type": "contains" },
+    { "from": "app", "to": "apply-html", "type": "contains" },
+    { "from": "app", "to": "apply-css", "type": "contains" },
+    { "from": "app", "to": "run-js", "type": "contains" },
+    { "from": "html-source", "to": "apply-html", "type": "feeds" },
+    { "from": "css-source", "to": "apply-css", "type": "feeds" },
+    { "from": "js-source", "to": "run-js", "type": "feeds" },
+    { "from": "apply-html", "to": "preview-root", "type": "targets" },
+    { "from": "apply-css", "to": "preview-root", "type": "targets" },
+    { "from": "run-js", "to": "preview-root", "type": "targets" },
+    { "from": "boot", "to": "apply-html", "type": "flow", "order": 1 },
+    { "from": "boot", "to": "apply-css", "type": "flow", "order": 2 },
+    { "from": "boot", "to": "run-js", "type": "flow", "order": 3 }
+  ]
+}

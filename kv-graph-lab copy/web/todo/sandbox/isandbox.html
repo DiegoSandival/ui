@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <h3>Verificador Simple de Código JS</h3>
+    <button onclick="probarCodigo()">Probar código</button>
+    <div id="resultado"></div>
+
+    <script>
+        function ejecutarEnSandbox(codigo) {
+            return new Promise((resolve, reject) => {
+                // 1. Crear iframe oculto
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.sandbox = 'allow-scripts'; // Solo scripts
+                
+                let timeoutId;
+
+                // 2. HTML con el código a probar
+                const html = `
+            <script>
+                window.resultado = {logs: [], errores: []};
+                
+                // Capturar console.log
+                console.log = (...args) => {
+                    window.resultado.logs.push(args.join(' '));
+                };
+                
+                // Manejar errores no capturados
+                window.onerror = (msg, url, line, col, error) => {
+                    window.resultado.errores.push(msg);
+                    parent.postMessage(window.resultado, '*');
+                };
+                
+                // Ejecutar código
+                try {
+                    ${codigo.replace(/<\/script>/g, '<\\/script>')}
+                } catch(e) {
+                    window.resultado.errores.push(e.message);
+                }
+                
+                // Enviar resultado al padre si no hay bucle infinito
+                parent.postMessage(window.resultado, '*');
+            <\/script>
+        `;
+
+                // 3. Cuando llegue el mensaje
+                const messageHandler = (e) => {
+                    if (timeoutId) clearTimeout(timeoutId);
+                    resolve(e.data);
+                    iframe.remove();
+                    window.removeEventListener('message', messageHandler);
+                };
+                
+                window.addEventListener('message', messageHandler);
+
+                // 4. Timeout desde el CONTEXTO PADRE (no se bloquea)
+                timeoutId = setTimeout(() => {
+                    // Forzar la terminación del iframe
+                    iframe.remove();
+                    window.removeEventListener('message', messageHandler);
+                    resolve({
+                        logs: [],
+                        errores: ['TIMEOUT: Código tardó demasiado (posible bucle infinito)']
+                    });
+                }, 1000); // 1 segundo de timeout
+
+                // 5. Ejecutar
+                iframe.srcdoc = html;
+                document.body.appendChild(iframe);
+            });
+        }
+
+        async function probarCodigo() {
+            const codigo = `
+                console.log("prueba");
+               // while(true){}
+            `;
+
+            const resultado = await ejecutarEnSandbox(codigo);
+            console.log(resultado);
+            
+            // Mostrar resultado en pantalla
+            const resultadoDiv = document.getElementById('resultado');
+            resultadoDiv.innerHTML = `
+                <h4>Resultado:</h4>
+                <p><strong>Logs:</strong> ${resultado.logs.join('<br>') || 'Ninguno'}</p>
+                <p><strong>Errores:</strong> ${resultado.errores.join('<br>') || 'Ninguno'}</p>
+            `;
+        }
+    </script>
+</body>
+</html>

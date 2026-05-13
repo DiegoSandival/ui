@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <h3>Verificador Simple de Código JS</h3>
+    <button onclick="probarCodigo()">Probar código</button>
+    <div id="resultado"></div>
+
+    <script>
+        function ejecutarEnSandbox(codigo) {
+            return new Promise((resolve) => {
+                // 1. Crear iframe oculto
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.sandbox = 'allow-scripts'; // Solo scripts
+
+                // 2. HTML con el código a probar
+                const html = `
+            <script>
+                window.resultado = {logs: [], errores: []};
+                
+                // Capturar console.log
+                console.log = (...args) => {
+                    window.resultado.logs.push(args.join(' '));
+                };
+                
+                // Timeout de seguridad
+                setTimeout(() => {
+                   
+                    window.resultado.errores.push('TIMEOUT');
+                    parent.postMessage(window.resultado, '*');
+                }, 10);
+                
+                // Ejecutar código
+                try {
+                    ${codigo.replace(/<\/script>/g, '<\\/script>')}
+                } catch(e) {
+                    window.resultado.errores.push(e.message);
+                }
+                
+                // Enviar resultado al padre
+                parent.postMessage(window.resultado, '*');
+            <\/script>
+        `;
+
+                // 3. Cuando llegue el mensaje
+                window.onmessage = (e) => {
+                    resolve(e.data);
+                    iframe.remove();
+                };
+
+                // 4. Ejecutar
+                iframe.srcdoc = html;
+                document.body.appendChild(iframe);
+            });
+        }
+
+        async function probarCodigo() {
+            const codigo = `
+
+            console.log("prueba")
+
+            while(true){}
+    `;
+
+            const resultado = await ejecutarEnSandbox(codigo);
+
+            console.log(resultado)
+
+        }
+    </script>
+</body>
+
+</html>

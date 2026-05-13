@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html><body>
+<h3>Verificador JS con Web Worker</h3>
+<button onclick="probarCodigo()">Probar código</button>
+<div id="resultado"></div>
+
+<script>
+async function ejecutarEnWorker(codigo) {
+    return new Promise((resolve) => {
+        // Worker mínimo
+        const worker = new Worker(URL.createObjectURL(
+            new Blob([`
+                self.onmessage = (e) => {
+                    const resultado = { logs: [], errores: [] };
+                    console.log = (...args) => resultado.logs.push(args.join(' '));
+                    try { eval(e.data) } catch(err) { resultado.errores.push(err.message) }
+                    postMessage(resultado);
+                };
+            `], {type: 'application/javascript'})
+        ));
+        
+        const timeout = setTimeout(() => {
+            worker.terminate();
+            resolve({ logs: [], errores: ['TIMEOUT'] });
+        }, 1000);
+        
+        worker.onmessage = (e) => {
+            clearTimeout(timeout);
+            worker.terminate();
+            resolve(e.data);
+        };
+        
+        worker.postMessage(codigo);
+    });
+}
+
+async function probarCodigo() {
+    const codigo = document.querySelector('#codigo')?.value || `
+        console.log("prueba");
+        while(true){} // Descomenta para probar timeout
+    `;
+    
+    const resultado = await ejecutarEnWorker(codigo);
+    document.getElementById('resultado').innerHTML = `
+        Logs: ${resultado.logs.join(', ')}<br>
+        Errores: ${resultado.errores.join(', ')}
+    `;
+}
+</script>
+</body></html>
