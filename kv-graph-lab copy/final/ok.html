@@ -8,6 +8,17 @@
     <meta name="robots" content="noindex, nofollow">
 
     <style>
+        :root {
+            --graph-bg: #050505;
+            --graph-bg-elevated: rgba(255, 255, 255, 0.08);
+            --graph-bg-strong: rgba(10, 10, 10, 0.92);
+            --graph-border: rgba(255, 255, 255, 0.14);
+            --graph-border-active: rgba(255, 255, 255, 0.24);
+            --graph-text: #f8fafc;
+            --graph-text-muted: #cbd5e1;
+            --graph-shadow: 0 18px 48px rgba(0, 0, 0, 0.35);
+        }
+
         * {
             padding: 0;
             margin: 0;
@@ -16,59 +27,74 @@
         .object-name {
             position: absolute;
             font-size: 1rem;
-            color: #64748b;
+            color: var(--graph-text);
             font-weight: 500;
             cursor: pointer;
-            padding: 2px 6px;
-            border-radius: 3px;
-            transition: background-color 0.1s ease;
+            padding: 6px 12px;
+            border-radius: 999px;
+            transition: background-color 0.15s ease, border-color 0.15s ease,
+                transform 0.15s ease;
             width: fit-content;
-            background-color: #f1f5f9;
-            border: none;
+            background: var(--graph-bg-elevated);
+            border: 1px solid var(--graph-border);
+            box-shadow: var(--graph-shadow);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
             outline: none;
             user-select: none;
         }
 
+        .object-name:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: var(--graph-border-active);
+            transform: translateY(-1px);
+        }
+
         .object-name:focus {
-            border: 1px solid #3b82f6;
+            border: 1px solid rgba(88, 166, 255, 0.55);
         }
 
         .object-name:active {
-            background-color: #ffffff;
-            box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
+            background: rgba(255, 255, 255, 0.18);
+            transform: translateY(0);
         }
 
         .context-menu {
             position: absolute;
-            background: white;
-            border-radius: 4px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            border: 1px solid #e2e8f0;
+            background: var(--graph-bg-strong);
+            border-radius: 14px;
+            box-shadow: var(--graph-shadow);
+            border: 1px solid var(--graph-border);
             z-index: 1000;
             min-width: 140px;
             transition: opacity 0.1s ease, transform 0.1s ease;
             user-select: none;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
         }
 
         .menu-item {
-            padding: 6px 10px;
+            padding: 8px 12px;
             font-size: 0.75rem;
-            color: #475569;
+            color: var(--graph-text-muted);
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 6px;
             user-select: none;
-            border-bottom: 1px solid #f1efef;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
         }
 
         .menu-item:hover {
-            background-color: #f1f5f9;
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .menu-item:active {
-            background-color: #ffffff;
-            box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
+            background: rgba(255, 255, 255, 0.12);
         }
 
         .modal-content {
@@ -76,66 +102,67 @@
             left: 50%;
             top: 50%;
             padding: 1rem;
-            border: none;
-            border-radius: 10px;
-            background: #ecf1f5;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-                0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--graph-border);
+            border-radius: 18px;
+            background: rgba(11, 15, 20, 0.88);
+            box-shadow: var(--graph-shadow);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
             transform: translate(-50%, -50%);
             z-index: 2000;
         }
 
         .modal-content button {
             font-size: 0.75rem;
-            color: #475569;
+            color: var(--graph-text);
             font-weight: 500;
             cursor: pointer;
             padding: 4px 12px;
-            border-radius: 6px;
+            border-radius: 10px;
             transition: all 0.15s ease;
             width: fit-content;
-            background-color: #e2e8f0;
-            border: none;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--graph-border);
             outline: none;
             user-select: none;
         }
 
         .modal-content button:hover {
-            background-color: #cbd5e1;
-            color: #334155;
+            background: rgba(255, 255, 255, 0.12);
+            border-color: var(--graph-border-active);
         }
 
         .modal-content button:active {
-            background-color: #94a3b8;
+            background: rgba(255, 255, 255, 0.18);
             transform: scale(0.98);
         }
 
         .modal-content button[data-modal="continue"] {
-            background-color: #475569;
-            color: #f1f5f9;
-            border: none;
+            background: rgba(88, 166, 255, 0.22);
+            color: #f8fbff;
+            border: 1px solid rgba(88, 166, 255, 0.35);
         }
 
         .modal-content button[data-modal="continue"]:hover {
-            background-color: #334155;
+            background: rgba(88, 166, 255, 0.3);
             color: #ffffff;
         }
 
         .modal-content input {
-            border: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             outline: none;
             padding: 4px 8px;
             border-radius: 8px;
-            color: #334155;
+            color: var(--graph-text);
             font-family: inherit;
             font-size: 1rem;
             flex: 1;
-            background: white;
+            background: rgba(255, 255, 255, 0.06);
         }
 
         .modal-content span {
             font-family: "Courier New", Courier, monospace;
-            color: #475569;
+            color: #94a3b8;
             font-weight: 100;
             font-size: smaller;
             font-style: italic;
@@ -156,7 +183,9 @@
         }
 
         body {
-            background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+            background:
+                radial-gradient(circle at top, rgba(88, 166, 255, 0.12), transparent 28%),
+                linear-gradient(180deg, #020202 0%, var(--graph-bg) 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -225,11 +254,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(13, 17, 23, 0.95);
+            background: rgba(0, 0, 0, 0.22);
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(1px) saturate(0.6%);
+            -webkit-backdrop-filter: blur(1px) saturate(0.6%);
             display: flex;
         }
 
@@ -238,10 +268,12 @@
             max-width: 900px;
             height: 80%;
             max-height: 700px;
-            border-radius: 12px;
-            background: #161b22;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
-            border: 1px solid #30363d;
+            border-radius: 18px;
+            background: rgba(12, 12, 12, 0.34);
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.32);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            backdrop-filter: blur(1px) saturate(0.6%);
+            -webkit-backdrop-filter: blur(1px) saturate(0.6%);
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -251,8 +283,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #0d1117;
-            border-bottom: 1px solid #30363d;
+            background: rgba(255, 255, 255, 0.06);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding: 12px 16px;
             flex-shrink: 0;
         }
@@ -267,7 +299,7 @@
         }
 
         .editor-title-icon {
-            color: #58a6ff;
+            color: #c9d1d9;
             font-size: 16px;
         }
 
@@ -311,6 +343,16 @@
             flex: 1;
             width: 100%;
             height: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        #monaco-container .monaco-editor,
+        #monaco-container .monaco-editor-background,
+        #monaco-container .margin,
+        #monaco-container .monaco-scrollable-element {
+            background: transparent !important;
         }
 
         .footer {
@@ -572,6 +614,32 @@
                     const createEditor = (langId) => {
                         const monacoLang = this.languageMap[langId] || langId;
 
+                        monaco.editor.defineTheme("glass-dark", {
+                            base: "vs-dark",
+                            inherit: true,
+                            rules: [],
+                            colors: {
+                                "editor.background": "#0b0b0b42",
+                                "editorGutter.background": "#0b0b0b24",
+                                "editorLineNumber.foreground": "#94a3b8",
+                                "editorLineNumber.activeForeground": "#f8fafc",
+                                "editorCursor.foreground": "#f8fafc",
+                                "editor.selectionBackground": "#ffffff18",
+                                "editor.inactiveSelectionBackground": "#ffffff10",
+                                "editor.lineHighlightBackground": "#ffffff08",
+                                "editor.lineHighlightBorder": "#00000000",
+                                "editorIndentGuide.background1": "#ffffff12",
+                                "editorIndentGuide.activeBackground1": "#ffffff22",
+                                "focusBorder": "#00000000",
+                                "contrastBorder": "#00000000",
+                                "contrastActiveBorder": "#00000000",
+                                "editorWidget.border": "#ffffff12",
+                                "scrollbarSlider.background": "#ffffff14",
+                                "scrollbarSlider.hoverBackground": "#ffffff24",
+                                "scrollbarSlider.activeBackground": "#ffffff30"
+                            }
+                        });
+
                         if (editorInstance) {
                             editorInstance.dispose();
                         }
@@ -581,7 +649,7 @@
                             {
                                 value: code,
                                 language: monacoLang,
-                                theme: "vs-dark",
+                                theme: "glass-dark",
                                 automaticLayout: true,
                                 fontSize: 14,
                                 fontFamily: "Fira Code, Consolas, monospace",
